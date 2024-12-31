@@ -32,6 +32,16 @@
                 states = <100000 0x0 3300000 0x1>;
         };
 
+	pcie30_3v3: gpio-regulator {
+                compatible = "regulator-gpio";
+                regulator-name = "pcie30_3v3";
+                regulator-min-microvolt = <100000>;
+                regulator-max-microvolt = <3300000>;
+                gpios = <&gpio2 RK_PD7 GPIO_ACTIVE_LOW>;
+                gpios-states = <0x1>;
+                states = <100000 0x0 3300000 0x1>;
+        };
+
 	leds: leds {
                 compatible = "gpio-leds";
                 work_led: work {
@@ -276,8 +286,8 @@
 		focaltech,max-touch-number = <5>;
 		focaltech,display-coords = <0 0 480 800>;
 		power-supply = <&vcc3v3_lcd0_n>;
-		//focaltech,reg_vdd = <&vcc3v3_sys>;
-		//focaltech,reg_avdd = <&vcc3v3_sys>;
+		//focaltech,reg_vdd = <0x0000001f>;
+		//focaltech,reg_avdd = <0x0000001f>;
 		//vcc-supply = <&vcc3v3_sys>;
 		//vcc_i2c-supply = <&vcc3v3_lcd0_n>;
 	};
@@ -323,16 +333,17 @@
 	reset-gpios = <&gpio3 RK_PC1 GPIO_ACTIVE_HIGH>;
 	vpcie3v3-supply = <&pcie20_3v3>;
 	pinctrl-0 = <&pcie20m1_pins>; 
-	status = "okay";
+	status = "disabled";
 };
 
 &pcie30phy {
-        status = "disabled";
+        status = "okay";
 };
 
 &pcie3x2 {
         reset-gpios = <&gpio2 RK_PD6 GPIO_ACTIVE_HIGH>;
-        vpcie3v3-supply = <&vcc3v3_pcie>;
+        //vpcie3v3-supply = <&vcc3v3_pcie>;
+        vpcie3v3-supply = <&pcie30_3v3>;
 	pinctrl-0 = <&pcie30x2m1_pins>; 
         status = "okay";
 };
